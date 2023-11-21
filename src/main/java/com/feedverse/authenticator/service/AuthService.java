@@ -79,9 +79,8 @@ public class AuthService {
 
             // Create user with password in Keycloak
             Response response= keycloak.realm(realm).users().create(userRepresentation);
-            System.out.println(response.getStatus());
             if (response.getStatus() == 201)
-                  repo.save(new DBUser(user.getUsername(), user.getEmail(),user.getPassword()));
+                  repo.save(new DBUser(user.getUsername(), user.getEmail(),user.getPassword(),"user"));
             else
                 throw new RuntimeException("Failed to create user: " + response.getStatusInfo().toString());
 

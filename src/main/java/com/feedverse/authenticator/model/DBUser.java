@@ -3,20 +3,23 @@ package com.feedverse.authenticator.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "app-user")
+@Table(name = "app_user")
 public class DBUser {
 
     String username;
     @Id
     String email;
+
+    String password;
     String role;
 
     public DBUser() {
     }
 
-    public DBUser(String username, String email, String role) {
+    public DBUser(String username, String email, String password,String role) {
         this.username = username;
         this.email = email;
+        this.password = password;
         this.role = role;
     }
 
@@ -42,6 +45,14 @@ public class DBUser {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     @Override
