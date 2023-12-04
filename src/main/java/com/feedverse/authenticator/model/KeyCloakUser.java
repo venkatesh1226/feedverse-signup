@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 public class KeyCloakUser {
 
     private String username;
+    private String fullName;
 
     @Id
     private String email;
@@ -13,10 +14,19 @@ public class KeyCloakUser {
 
     public KeyCloakUser() {
     }
-    public KeyCloakUser(String username, String email, String password) {
+    public KeyCloakUser(String username, String fullName,String email, String password) {
         this.username = username;
+        this.fullName= fullName;
         this.email = email;
         this.password = password;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     public String getUsername() {
@@ -47,6 +57,7 @@ public class KeyCloakUser {
     public String toString() {
         return "KeyCloakUser{" +
                 "username='" + username + '\'' +
+                ", fullName='" + fullName + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 '}';

@@ -2,6 +2,7 @@ package com.feedverse.authenticator.controller;
 
 import com.feedverse.authenticator.model.KeyCloakUser;
 import com.feedverse.authenticator.service.AuthService;
+import org.keycloak.representations.AccessTokenResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -32,13 +35,37 @@ public class AuthController {
 
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody Map<String, String> credentials) {
+    public ResponseEntity<Map<String,String>> login(@RequestBody Map<String, String> credentials) {
         logger.debug(credentials.toString());
-        String token = keycloakService.loginUserWithEmail(credentials.get("email"), credentials.get("password"));
-        logger.debug(token);
+        AccessTokenResponse response = keycloakService.loginUserWithEmail(credentials.get("email"), credentials.get("password"));
+        logger.debug("**");
+        logger.debug(response.toString());
+        Map res=new HashMap<String,String>();
+        res.put("access_token",response.getToken());
+        res.put("refresh_token",response.getRefreshToken());
+        res.put("expires_in",""+response.getExpiresIn());
+        res.put("refresh_expires_in",""+response.getRefreshExpiresIn());
+
+
         return ResponseEntity.ok()
-                .contentType(MediaType.TEXT_PLAIN)
-                .body(token);
+                .body(res);
+    }
+
+    @PostMapping("/update-token")
+    public ResponseEntity<Map<String,String>> updateToken(@RequestBody Map<String,String> body) {
+        String refreshToken=body.get("refreshToken");
+        logger.debug(refreshToken);
+        AccessTokenResponse response = keycloakService.updateToken(refreshToken);
+        logger.debug("**");
+        System.out.println("**************");
+        logger.debug(response.toString());
+        Map res = new HashMap<String, String>();
+        res.put("access_token", response.getToken());
+        res.put("refresh_token", response.getRefreshToken());
+        res.put("expires_in", "" + response.getExpiresIn());
+        res.put("refresh_expires_in", "" + response.getRefreshExpiresIn());
+        return ResponseEntity.ok()
+                .body(res);
     }
 
     @PostMapping("/login-username")
