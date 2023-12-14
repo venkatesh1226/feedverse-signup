@@ -20,9 +20,3 @@ jobs:
 
       - name: Build with Maven
         run: mvn clean install
-
-      - name: Upload artifact for deployment job
-        uses: actions/upload-artifact@v2
-        with:
-          name: java-app
-          path: '${{ github.workspace }}/target/*.jar'
