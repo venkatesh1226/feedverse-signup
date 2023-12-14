@@ -26,4 +26,4 @@ jobs:
       run: docker build -t my-spring-app .
 
     - name: Run Docker Image
-      run: docker run -d -p 8008:8008 feedverse-signup
+      run: docker run -d -p 8008:8008 my-spring-app
